@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+    minecraft:
+        # This ${VERSION} means it will copy the Minecraft version from the VERSION environment variable
+        # Alternatively, you can replace ${VERSION} here with your desired version if you'd like.
+        image: "minecraft-server:${VERSION:?You should specify the Minecraft version to run using the VERSION environment variable.}"
+        ports:
+            # This will make the Minecraft server run on port 25565 on your machine.
+            # If you want it to be on a different port, use YOUR_PORT:25565
+            - 25565:25565
+        environment:
+            # Set EULA=true to confirm that you've read the Minecraft EULA:
+            # https://account.mojang.com/documents/minecraft_eula
+            - EULA=false
+            # Set MEMORY to an appropriate value
+            # e.g. 2G means 2 gigabytes, 1536M means 1536 megabytes (1.5GB)
+            - MEMORY=2G
+        volumes:
+            # This mounts the Minecraft server's data to the "minecraft-data" folder in the current directory
+            # This means your world folder will be at ./minecraft-data/world and your server properties will be at ./minecraft-data/server.properties
+            # If you want to change where it's mounted, make sure only to change the bit before the colon ":"
+            - ./minecraft-data:/data
