@@ -41,7 +41,7 @@ main() {
     VERSION_MANIFEST="$(echo "${MANIFEST}" | jq ".versions[] | select(.id == \"${VERSION}\")")"
 
     VERSION_TYPE="$(echo "${VERSION_MANIFEST}" | jq -r .type)"
-    VERSION_RELEASE_DATE="$(echo "${VERSION_MANIFEST}" | jq -r '.releaseTime | sub("[+]00:00$";"Z") | fromdateiso8601 | strflocaltime("%d %B %Y")')"
+    VERSION_RELEASE_DATE="$(echo "${VERSION_MANIFEST}" | jq -r '.releaseTime | sub("[+]00:00$";"Z") | fromdateiso8601 | strftime("%d %B %Y")')"
     VERSION_MANIFEST_URL="$(echo "${VERSION_MANIFEST}" | jq -r .url)"
 
     echo "Found ${VERSION_TYPE} version ${VERSION} released on ${VERSION_RELEASE_DATE}"
