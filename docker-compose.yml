@@ -5,6 +5,8 @@ services:
         # This ${VERSION} means it will copy the Minecraft version from the VERSION environment variable
         # Alternatively, you can replace ${VERSION} here with your desired version if you'd like.
         image: "minecraft-server:${VERSION:?You should specify the Minecraft version to run using the VERSION environment variable.}"
+        stdin_open: true
+        tty: true
         ports:
             # This will make the Minecraft server run on port 25565 on your machine.
             # If you want it to be on a different port, use YOUR_PORT:25565
