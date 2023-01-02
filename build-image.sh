@@ -47,8 +47,11 @@ main() {
     echo "Found ${VERSION_TYPE} version ${VERSION} released on ${VERSION_RELEASE_DATE}"
 
     echo "Fetching Minecraft ${VERSION} version manifest..."
-    SERVER_DOWNLOAD_MANIFEST="$(curl -sSL "${VERSION_MANIFEST_URL}" | jq .downloads.server)"
+    SERVER_MANIFEST="$(curl -sSL "${VERSION_MANIFEST_URL}")"
 
+    JAVA_VERSION="$(echo ${SERVER_MANIFEST} | jq .javaVersion.majorVersion)"
+
+    SERVER_DOWNLOAD_MANIFEST="$(echo ${SERVER_MANIFEST} | jq .downloads.server)"
     SERVER_JAR_URL="$(echo ${SERVER_DOWNLOAD_MANIFEST} | jq -r .url)"
     SERVER_JAR_SHA1="$(echo ${SERVER_DOWNLOAD_MANIFEST} | jq -r .sha1)"
     SERVER_JAR_SIZE="$(echo ${SERVER_DOWNLOAD_MANIFEST} | jq -r .size)"
@@ -61,6 +64,7 @@ main() {
     fi
 
     docker build \
+        --build-arg JAVA_VERSION="${JAVA_VERSION}" \
         --build-arg SERVER_JAR_URL="${SERVER_JAR_URL}" \
         --build-arg SERVER_JAR_SHA1="${SERVER_JAR_SHA1}" \
         --build-arg SERVER_JAR_SIZE="${SERVER_JAR_SIZE}" \
